@@ -3,6 +3,9 @@ variable "cidr_blocks" {
   description = "CIDR for sg"
 }
 
-variable "password" {
-  description = "Database password"
+variable "access_key" {}
+variable "secret_key" {}
+
+variable "ec2_key_pair" {
+  description = "Name of the key-pair for ec2 SSH"
 }
