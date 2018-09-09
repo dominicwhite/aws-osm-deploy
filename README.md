@@ -3,8 +3,8 @@
 A collection of Terraform and Ansible scripts for provisioning an AWS EC2 instance for OpenStreetMap data.
 
 ## TO-DO
-- Download and set up OSM data
-- 
+- Download and set up OSM data in EC2 instance
+- Rather than destroying instance completely save snapshot/EBS volume to S3, and re-provision from this in future
 
 ## Usage
 
