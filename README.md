@@ -28,12 +28,14 @@ You need to specify several user variables in the `variables.tf` file, i.e. on t
 
 Provision using:
 
-```terraform apply
+```bash
+terraform apply
 ```
 
 You may have to specify user variables at this point. For example, to programmatically find your IP address at deployment, run using:
 
-```terraform apply -var "my_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)"
+```bash
+terraform apply -var "my_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)"
 ```
 
 Destroy the infrastructure using `terraform destroy`
@@ -42,7 +44,8 @@ Destroy the infrastructure using `terraform destroy`
 
 To SSH into the instance from the command-line, run (inserting the correct path to your key.pem file):
 
-```ssh -i /path/to/your-key.pem ubuntu@ec2-$(cat inventory | sed 's/\./-/g').compute-1.amazonaws.com
+```bash
+ssh -i /path/to/your-key.pem ubuntu@ec2-$(cat inventory | sed 's/\./-/g').compute-1.amazonaws.com
 ```
 
 ## License
