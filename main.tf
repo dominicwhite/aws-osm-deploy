@@ -56,10 +56,58 @@ resource "aws_volume_attachment" "postgres-volume-attachment" {
   volume_id   = "${aws_ebs_volume.postgres-volume.id}"
 }
 
+resource "aws_security_group" "rds" {
+  name = "openaq_rds_sg"
+  description = "Allow all inbound traffic"
+  vpc_id = "${data.aws_vpc.default.id}"
+  revoke_rules_on_delete = true
+  
+  ingress {
+    from_port = 5432
+    to_port = 5432
+    protocol = "TCP"
+    security_groups = ["${aws_security_group.openaq.id}"]
+  }
+  
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  tags {
+    Name = "Postgres GIS security group"
+  }
+}
+
+/*
+data "aws_db_snapshot" "db_snapshot" {
+    most_recent = true
+    db_instance_identifier = "openaq-postgres-gis"
+}
+*/
+
+resource "aws_db_instance" "default" {
+  identifier = "openaq-postgres-gis"
+  allocated_storage = "20"
+  engine = "postgres"
+  engine_version = "9.6.6"
+  instance_class = "db.t2.micro"
+  name = "gis"
+  username = "gisuser"
+  password = "${var.rds_password}"
+  port = 5432
+  vpc_security_group_ids = ["${aws_security_group.rds.id}"]
+  # snapshot_identifier = "${data.aws_db_snapshot.db_snapshot.id}"
+  skip_final_snapshot = false
+}
+
+/*
 resource "null_resource" "configure_ec2" {
   provisioner "local-exec" {
     command = "ansible-playbook -u ubuntu -i inventory --private-key ${var.ssh_key_private} provision.yml"
   }
   depends_on = ["aws_volume_attachment.postgres-volume-attachment"]
 }
-
+*/

@@ -10,3 +10,5 @@ variable "ec2_key_pair" {
 }
 
 variable "ssh_key_private" {}
+
+variable "rds_password" {}

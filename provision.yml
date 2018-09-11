@@ -7,29 +7,14 @@
     - name: install python 2
       raw: sudo bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python-minimal)"
 
-    - apt:
-        name:
-          - wget
-          - ca-certificates
-        state: present
-    
-    - name: Add Postgres key
-      raw: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-    
-    - name: Add Postgres source
-      raw: sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-    
     - name: Update and upgrade packages
       apt: 
         upgrade: yes
         update_cache: yes
     
-    - name: Install Postgres
+    - name: Install packages
       apt:
         name:
-          - postgresql-10 
-          - pgadmin4 
           - osm2pgsql
-          - postgis
           - osmosis
         
